@@ -1,0 +1,42 @@
+drop table callLog;
+drop table Lat_long;
+drop table duration;
+drop table clustercentroids;
+drop table decisionmatrix;
+drop table duration;
+drop table durationcentroids;
+
+
+create table callLog(Index  int,userId  String,date1 String,time1 String,duration int,lat double,long double) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/tip.txt' overwrite into table callLog;
+
+show tables;
+ 
+create table Lat_long(centroid String,lat double,long double) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/Data/lat_long_centroids.csv' overwrite into table Lat_long;
+
+select * from Lat_long limit 10;
+
+create table duration(centroid String,dura double) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/Data/duration_centroids.csv' overwrite into table duration;
+
+create table clustercentroids(centroid String,lat double,long double) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/Data/clusterCentroids.csv' overwrite into table clustercentroids;
+
+
+create table durationcentroids(centroid String,dur double) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/Data/duartionCentroids.csv' overwrite into table durationcentroids;
+
+
+create table decisionMatrix(postion_centriod String,duration_centriod String,plan String) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' ;
+
+load data local inpath '/home/venky/Desktop/BigDataProject/Data/decision.csv' overwrite into table decisionMatrix;
+
+
+
+

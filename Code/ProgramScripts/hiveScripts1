@@ -1,0 +1,17 @@
+select c.u1,count(*) as co from (select u1,u2 from (select a.userId as u1,b.userId as u2,a.time1,a.duration from calllog a,calllog b where a.date1=b.date1 and a.duration=b.duration and a.time1=b.time1 and a.userid<>b.userid ) as d ) as c group by c.u1 orderby co desc 
+ 
+
+select  date1,time1,duration,count(*) from callLog group by date1,time1,duration having count(*)>1
+
+
+select u1,lat_a,long_a,u2,lat_b,long_b from (select a.userId as u1,b.userId as u2,a.time1,a.duration,a.lat as lat_a,a.long as long_a,b.lat as lat_b,b.long as long_b from calllog a,calllog b where a.date1=b.date1 and a.duration=b.duration and a.time1=b.time1 and a.userid<>b.userid ) as d limit 20
+
+group by a.userid,b.userid
+
+select u1,lat_a,long_a,u2,lat_b,long_b from (select a.userId as u1,b.userId as u2,a.time1,a.duration,a.lat as lat_a,a.long as long_a,b.lat as lat_b,b.long as long_b from calllog a,calllog b where a.date1=b.date1 and a.duration=b.duration and a.time1=b.time1 and a.userid<>b.userid ) 
+
+select * from callLog  c where userId Like '%AAH03JAC3AAAdBxAg3%'
+
+hive -e 'select u1,u2 from (select a.userId as u1,b.userId as u2,a.time1 as tim,a.duration as dur from calllog a,calllog b where a.date1=b.date1 and a.duration=b.duration and a.time1=b.time1 and a.userid<>b.userid ) as d' > user.csv
+
+

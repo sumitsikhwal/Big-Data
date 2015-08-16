@@ -1,0 +1,45 @@
+def predictPlan(lat: String, long: String, callDuration: String, model: org.apache.spark.mllib.tree.model.DecisionTreeModel): Double = {
+val data = sc.textFile("/vxk143830/locationClusters2.csv")
+val calldata = sc.textFile("/vxk143830/callClusters2.csv")
+var coordinate = Coordinates(lat.toDouble,long.toDouble)
+var latValues = data.map(l => l.split(",")).map(x => (x(0).toInt,Coordinates(x(1).toDouble, x(2).toDouble))).collectAsMap
+var clusterID = latValues.map{ i => (i._1, i._2.distance(coordinate) )}.toSeq.sortBy(_._2).take(1).toList(0)._1
+var callValues = calldata.map(l => l.split(",")).map(x => (x(0).toInt,x(1).toDouble)).collectAsMap
+var callClusterID = callValues.map{ i => (i._1, dist(i._2, callDuration.toDouble) )}.toSeq.sortBy(_._2).take(1).toList(0)._1
+model.predict(Vectors.dense(Array(clusterID.toDouble, callClusterID.toDouble)))
+}
+
+def dist(point1: Double, point2: Double): Double = {
+	Math.pow((point1-point2), 2)
+}
+
+case class Coordinates(latitude: Double, longitude: Double) {
+  
+  def distance(that: Coordinates): Double = {
+    var R = 6371000;
+    var lat1 = this.latitude;
+    var lat2 = that.latitude;
+    var lon1 = this.longitude;
+    var lon2 = that.longitude;
+    var sigh = Math.toRadians(lat2 - lat1);
+    var lambda = Math.toRadians(lon2 - lon1);
+
+    var a = Math.sin(sigh / 2) * Math.sin(sigh / 2) +
+      Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+      Math.sin(lambda / 2) * Math.sin(lambda / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    R * c;
+  }
+}
+
+
+print("Plan " + predictPlan("23.813900","90.398598", "34", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+print("Plan " + predictPlan("23.702800","90.406100", "1600", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+print("Plan " + predictPlan("24.813900","92.398598", "800", model).toInt)
+

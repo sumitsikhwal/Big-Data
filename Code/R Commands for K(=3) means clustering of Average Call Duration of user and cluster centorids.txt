@@ -1,0 +1,27 @@
+avgcall=read.csv("C:\\Users\\Awesome\\Downloads\\tip.txt")
+avgcall.features = avgcall
+trim=subset(avgcall.features,select = c(AAH03JABiAAJKnPAa5,X109))
+colnames(trim) <- c("V1","V2")
+avgdata <- aggregate(V2 ~ V1, trim, mean)
+D = matrix( c(136,23,31.5), nrow=3, ncol=1)
+avgdata_1=subset(avgdata,select = c(V2))
+result <- kmeans(avgdata_1,D,iter.max=100)
+work<-cbind(avgdata_1,result$cluster)
+cluscentres <- aggregate(V2 ~ result$cluster, work, mean)
+View(cluscentres)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
